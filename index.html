@@ -1,0 +1,252 @@
+<html>
+        <head><title>Downloaded HTML</title></head>
+        <body>
+            <pre style="white-space: pre-wrap; word-wrap: break-word;"><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSES Moderation Status</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:700px;
+    background:#111827;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 0 25px rgba(0,0,0,.4);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#94a3b8;
+    margin-bottom:25px;
+}
+
+.search{
+    display:flex;
+    gap:10px;
+}
+
+input{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#1e293b;
+    color:white;
+}
+
+button{
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.check-btn{
+    background:#2563eb;
+    color:white;
+}
+
+.result{
+    display:none;
+    margin-top:25px;
+    background:#1e293b;
+    border-radius:15px;
+    padding:20px;
+}
+
+.status{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.active{
+    color:#ef4444;
+}
+
+.expired{
+    color:#22c55e;
+}
+
+.info{
+    margin:8px 0;
+}
+
+.timer{
+    margin-top:20px;
+    text-align:center;
+}
+
+.time{
+    font-size:30px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.appeal{
+    margin-top:20px;
+    width:100%;
+    background:#22c55e;
+    color:white;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>SSES Moderation Status</h1>
+<p class="subtitle">Check timeout and ban records</p>
+
+<div class="search">
+<input id="idInput" placeholder="Enter Timeout ID or Ban ID">
+<button class="check-btn" onclick="checkStatus()">Check</button>
+</div>
+
+<div class="result" id="result">
+
+<div class="status active" id="statusText">
+ACTIVE
+</div>
+
+<div class="info"><strong>ID:</strong> <span id="userId"></span></div>
+<div class="info"><strong>Reason:</strong> <span id="reason"></span></div>
+<div class="info"><strong>Moderator:</strong> <span id="moderator"></span></div>
+<div class="info"><strong>Expires:</strong> <span id="expires"></span></div>
+
+<div class="timer">
+<h3>Time Remaining</h3>
+<div class="time" id="countdown">--</div>
+</div>
+
+<button class="appeal">
+Appeal Moderation Action
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const records = {
+
+"TO-0001":{
+reason:"Spamming",
+moderator:"Francis",
+expires:"2026-12-31T23:59:59"
+},
+
+"TO-0002":{
+reason:"Disrespectful Behavior",
+moderator:"Francis",
+expires:"2026-08-01T12:00:00"
+},
+
+"BAN-0001":{
+reason:"Severe Rule Violations",
+moderator:"Francis",
+expires:"2027-01-01T00:00:00"
+}
+
+};
+
+let timer;
+
+function checkStatus(){
+
+const id=document.getElementById("idInput").value.trim();
+
+const data=records[id];
+
+const result=document.getElementById("result");
+
+if(!data){
+result.style.display="block";
+document.getElementById("statusText").className="status active";
+document.getElementById("statusText").textContent="ID NOT FOUND";
+document.getElementById("userId").textContent="-";
+document.getElementById("reason").textContent="-";
+document.getElementById("moderator").textContent="-";
+document.getElementById("expires").textContent="-";
+document.getElementById("countdown").textContent="-";
+return;
+}
+
+result.style.display="block";
+
+document.getElementById("userId").textContent=id;
+document.getElementById("reason").textContent=data.reason;
+document.getElementById("moderator").textContent=data.moderator;
+document.getElementById("expires").textContent=data.expires;
+
+clearInterval(timer);
+
+function update(){
+
+const now=new Date();
+const end=new Date(data.expires);
+
+const diff=end-now;
+
+if(diff<=0){
+
+document.getElementById("statusText").textContent="EXPIRED";
+document.getElementById("statusText").className="status expired";
+document.getElementById("countdown").textContent="Time Served";
+
+clearInterval(timer);
+return;
+}
+
+document.getElementById("statusText").textContent="ACTIVE";
+document.getElementById("statusText").className="status active";
+
+const days=Math.floor(diff/(1000*60*60*24));
+const hours=Math.floor((diff/(1000*60*60))%24);
+const mins=Math.floor((diff/(1000*60))%60);
+const secs=Math.floor((diff/1000)%60);
+
+document.getElementById("countdown").textContent=
+`${days}d ${hours}h ${mins}m ${secs}s`;
+
+}
+
+update();
+timer=setInterval(update,1000);
+
+}
+
+</script>
+
+</body>
+</html></pre>
+        </body>
+    </html>
